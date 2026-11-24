@@ -77,16 +77,31 @@ def run_experiment(video_root, split_dir, output, split=1, methods=("finetune","
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     train_records, class_map = read_ucf101_split(video_root, split_dir, split, "train")
     test_records, _ = read_ucf101_split(video_root, split_dir, split, "test")
-    class_names = [name for name, _ in sorted(class_map.items(), key=lambda kv: kv[1])]
-    if max_classes:
+
+    train_records = [r for r in train_records if Path(r.path).is_file()]
+    test_records = [r for r in test_records if Path(r.path).is_file()]
+    train_names = {r.class_name for r in train_records}
+    test_names = {r.class_name for r in test_records}
+
+    class_names = [
+        name for name, _ in sorted(class_map.items(), key=lambda kv: kv[1])
+        if name in train_names and name in test_names
+    ]
+    if max_classes is not None:
         class_names = class_names[:max_classes]
+
     selected = set(class_names)
     train_records = [r for r in train_records if r.class_name in selected]
     test_records = [r for r in test_records if r.class_name in selected]
+
+    print(f"Using {len(class_names)} available classes")
+    print(f"Available training videos: {len(train_records)}")
+    print(f"Available testing videos: {len(test_records)}")
+
     tasks = build_tasks(train_records, class_names, classes_per_task)
     test_tasks = build_tasks(test_records, class_names, classes_per_task)
     if not tasks or any(not records for _, records in tasks):
-        raise ValueError("At least one selected task has no training videos. Check dataset paths/split.")
+        raise ValueError("No usable train/test tasks. Check dataset paths and split files.")
     num_classes = len(class_map)
     rows = []
 

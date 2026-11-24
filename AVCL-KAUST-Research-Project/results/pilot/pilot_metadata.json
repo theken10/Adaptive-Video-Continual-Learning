@@ -1,0 +1,14 @@
+{
+  "dataset": "UCF101 incomplete local copy",
+  "split": 1,
+  "pilot_classes": 10,
+  "available_classes_in_local_copy": 56,
+  "train_videos": 842,
+  "test_videos": 346,
+  "epochs": 1,
+  "frames_per_video": 4,
+  "image_size": 112,
+  "seed": 42,
+  "status": "preliminary pilot; not validated research conclusions",
+  "note": "Adaptive V2 ran on CPU; earlier pilot methods ran on GPU, so direct comparison is uncontrolled."
+}

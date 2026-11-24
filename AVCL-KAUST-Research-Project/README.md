@@ -196,3 +196,31 @@ Each experiment writes:
 - Rebuffi et al., **iCaRL: Incremental Classifier and Representation Learning**, CVPR 2017. [CVF Open Access](https://openaccess.thecvf.com/content_cvpr_2017/html/Rebuffi_iCaRL_Incremental_Classifier_CVPR_2017_paper.html)
 
 Check paper licenses, dataset terms, and benchmark protocols before publication.
+
+
+## Current Research Status
+
+- Dataset loading filters missing video files and retains classes available in both splits.
+- Adaptive frame selection combines motion, visual diversity, and temporal coverage.
+- Unit tests: 5 tests passed in the current development run.
+
+### Dataset and pilot limitations
+The local UCF101 copy is incomplete. The available Split 1 data was previously
+checked as 56 usable classes. The recorded pilot used 10 classes (842 training
+videos and 346 test videos), one epoch, and one seed. These are preliminary
+results, not validated benchmark conclusions.
+
+| Method | Accuracy | Forgetting | Stored frames |
+|---|---:|---:|---:|
+| Fine-tuning | 23.67% | 32.20% | 0 |
+| Experience Replay | 18.34% | 34.46% | 200 |
+| EWC | 20.12% | 32.20% | 0 |
+| Adaptive V1 | 17.16% | 35.03% | 200 |
+
+Adaptive V2 was separately run on CPU: 17.75% accuracy and 33.90% forgetting.
+Because its device differed from the earlier GPU runs, it is not a controlled
+comparison.
+
+### Remaining research
+Repeat experiments with multiple seeds and controlled hardware, evaluate more
+classes, perform component ablations, and report mean and standard deviation.

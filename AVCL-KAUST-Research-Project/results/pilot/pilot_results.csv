@@ -1,0 +1,6 @@
+method,accuracy_percent,forgetting_percent,stored_frames,elapsed_seconds
+Fine-tuning,23.6686,32.2034,0,1125.45
+ER,18.3432,34.4633,200,151.57
+EWC,20.1183,32.2034,0,159.10
+Adaptive_V1,17.1598,35.0282,200,981.33
+Adaptive_V2_CPU,17.7515,33.8983,200,2229.69

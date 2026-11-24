@@ -23,3 +23,15 @@ Average accuracy, forgetting, backward transfer, replay memory frames, wall-cloc
 
 ## Reporting
 Report mean ± standard deviation across seeds, hardware, software versions, dataset split, class order, training budget, limitations, and failed experiments. Do not invent or selectively omit results.
+
+
+## Reproducibility and Dataset Limitations
+
+Record dataset version, available classes, train/test counts, seed, frame budget,
+image size, epochs, and execution device for every run. The current pilot uses
+10 classes, one epoch, and one seed, so it is preliminary.
+
+Use identical data splits, preprocessing, model settings, and hardware when
+comparing methods. Repeat across multiple seeds and report mean and standard
+deviation. Run ablations to measure the contribution of motion, diversity,
+and temporal coverage independently.
