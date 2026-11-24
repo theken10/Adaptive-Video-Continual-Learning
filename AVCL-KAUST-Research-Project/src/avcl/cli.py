@@ -19,7 +19,7 @@ def run_main():
     _common(p)
     p.add_argument("--output", default="results/run")
     p.add_argument("--methods", nargs="+", default=["finetune","er","ewc","adaptive"],
-                   choices=["finetune","er","ewc","adaptive"])
+                   choices=["finetune","er","ewc","adaptive","adaptive_motion","adaptive_diversity","adaptive_combined"])
     p.add_argument("--epochs", type=int, default=2)
     p.add_argument("--batch-size", type=int, default=4)
     p.add_argument("--frames-per-video", type=int, default=4)

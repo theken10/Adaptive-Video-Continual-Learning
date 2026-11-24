@@ -108,7 +108,8 @@ def run_experiment(video_root, split_dir, output, split=1, methods=("finetune","
     for method in methods:
         seed_everything(seed)
         model = VideoClassifier(num_classes, pretrained=pretrained).to(device)
-        buffer = ReplayBuffer(memory_budget_frames, "adaptive" if method == "adaptive" else "uniform")
+        strategy = {"adaptive_motion": "motion", "adaptive_diversity": "diversity", "adaptive_combined": "adaptive", "adaptive": "adaptive"}.get(method, "uniform")
+        buffer = ReplayBuffer(memory_budget_frames, strategy)
         ewc = None
         acc = np.full((len(tasks), len(tasks)), np.nan, dtype=float)
         started = time.time()
@@ -116,11 +117,11 @@ def run_experiment(video_root, split_dir, output, split=1, methods=("finetune","
         for task_id, (task_names, records) in enumerate(tasks):
             seen_count = min((task_id + 1) * classes_per_task, len(class_names))
             seen_class_ids = [class_map[name] for name in class_names[:seen_count]]
-            selection = "adaptive" if method == "adaptive" else "uniform"
+            selection = {"adaptive_motion": "motion", "adaptive_diversity": "diversity", "adaptive_combined": "adaptive", "adaptive": "adaptive"}.get(method, "uniform")
             train_ds = UCF101VideoDataset(records, frames_per_video, image_size, selection, seed)
             current_loader = _loader(train_ds, batch_size, True)
             datasets = [train_ds]
-            if method in ("er", "adaptive") and buffer.items:
+            if method in ("er", "adaptive", "adaptive_motion", "adaptive_diversity", "adaptive_combined") and buffer.items:
                 datasets.append(MemoryDataset(buffer.items))
             combined = ConcatDataset(datasets) if len(datasets) > 1 else train_ds
             train_loader = _loader(combined, batch_size, True)

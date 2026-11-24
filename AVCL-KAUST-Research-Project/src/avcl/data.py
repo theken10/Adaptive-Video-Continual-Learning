@@ -7,7 +7,7 @@ import numpy as np
 import torch
 from PIL import Image
 from torch.utils.data import Dataset
-from .selection import uniform_indices, random_indices, adaptive_indices
+from .selection import (uniform_indices, random_indices, adaptive_indices, motion_indices, diversity_indices)
 
 VIDEO_EXTS = {".avi", ".mp4", ".mov", ".mkv"}
 
@@ -87,8 +87,8 @@ class UCF101VideoDataset(Dataset):
         self.image_size = image_size
         self.selection = selection
         self.seed = seed
-        if selection not in ("uniform", "random", "adaptive"):
-            raise ValueError("selection must be uniform, random, or adaptive")
+        if selection not in ("uniform", "random", "adaptive", "motion", "diversity"):
+            raise ValueError("selection must be uniform, random, adaptive, motion, or diversity")
 
     def __len__(self):
         return len(self.records)
@@ -100,6 +100,10 @@ class UCF101VideoDataset(Dataset):
         elif self.selection == "random":
             indices = random_indices(len(frames), self.frames_per_video,
                                      np.random.default_rng(self.seed + index))
+        elif self.selection == "motion":
+            indices = motion_indices(frames, self.frames_per_video)
+        elif self.selection == "diversity":
+            indices = diversity_indices(frames, self.frames_per_video)
         else:
             indices = adaptive_indices(frames, self.frames_per_video)
         chosen = [frames[i] for i in indices]

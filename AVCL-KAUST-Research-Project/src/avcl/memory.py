@@ -2,7 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import numpy as np
 import torch
-from .selection import uniform_indices, adaptive_indices
+from .selection import uniform_indices, adaptive_indices, motion_indices, diversity_indices
 
 @dataclass
 class ReplayItem:
@@ -15,8 +15,8 @@ class ReplayBuffer:
     def __init__(self, frame_budget: int, strategy: str = "uniform"):
         if frame_budget < 0:
             raise ValueError("frame_budget must be >= 0")
-        if strategy not in ("uniform", "adaptive"):
-            raise ValueError("strategy must be uniform or adaptive")
+        if strategy not in ("uniform", "adaptive", "motion", "diversity"):
+            raise ValueError("unsupported replay selection strategy")
         self.frame_budget = frame_budget
         self.strategy = strategy
         self.items: list[ReplayItem] = []
@@ -55,7 +55,12 @@ class ReplayBuffer:
                         mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
                         std = np.array([0.229, 0.224, 0.225], dtype=np.float32)
                         rgb = [np.clip((frame * std + mean) * 255.0, 0, 255).astype(np.uint8) for frame in arr]
-                        indices = adaptive_indices(rgb, n)
+                        if self.strategy == "motion":
+                            indices = motion_indices(rgb, n)
+                        elif self.strategy == "diversity":
+                            indices = diversity_indices(rgb, n)
+                        else:
+                            indices = adaptive_indices(rgb, n)
                     else:
                         indices = uniform_indices(len(item.frames), n)
                     frames = item.frames[indices].clone()
