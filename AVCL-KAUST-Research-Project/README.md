@@ -224,3 +224,19 @@ comparison.
 ### Remaining research
 Repeat experiments with multiple seeds and controlled hardware, evaluate more
 classes, perform component ablations, and report mean and standard deviation.
+
+
+## UCF101 Preliminary Pilot Results
+
+A preliminary single-seed pilot was run on 10 UCF101 classes (Split 1), using 5 tasks, 2 classes per task, and 1 epoch.
+
+| Method | Accuracy | Forgetting | Stored Frames |
+|---|---:|---:|---:|
+| Fine-tuning | 12.86% | 77.01% | 0 |
+| ER | 12.05% | 58.62% | 200 |
+| EWC | 12.86% | 76.06% | 0 |
+| Adaptive Combined | 17.82% | 52.97% | 200 |
+
+These are preliminary results only, not a validated benchmark. Only one seed and one epoch were used. Repeated-seed experiments and ablations remain necessary. The aggregate metrics were recovered from notebook output; original task-wise matrices were not backed up.
+
+See `results/kaust_pilot/RESEARCH_REPORT.md` for methodology, limitations, and next steps.

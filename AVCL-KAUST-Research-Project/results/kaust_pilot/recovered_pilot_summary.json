@@ -1,0 +1,58 @@
+{
+  "dataset": "UCF101",
+  "split": 1,
+  "classes": [
+    "HorseRace",
+    "HulaHoop",
+    "JavelinThrow",
+    "JugglingBalls",
+    "JumpingJack",
+    "JumpRope",
+    "Kayaking",
+    "LongJump",
+    "Mixing",
+    "MoppingFloor"
+  ],
+  "train_videos": 842,
+  "test_videos": 346,
+  "classes_count": 10,
+  "epochs": 1,
+  "classes_per_task": 2,
+  "seed": 42,
+  "device": "Tesla T4",
+  "status": "Preliminary single-seed pilot; metrics recovered from notebook output. Original accuracy matrices were not backed up.",
+  "metrics": [
+    {
+      "method": "finetune",
+      "accuracy": 0.1285714286,
+      "forgetting": 0.7700731498,
+      "backward_transfer": -0.7700731498,
+      "stored_frames": 0,
+      "elapsed_seconds": 339.0436
+    },
+    {
+      "method": "er",
+      "accuracy": 0.1205383023,
+      "forgetting": 0.5862276008,
+      "backward_transfer": -0.5862276008,
+      "stored_frames": 200,
+      "elapsed_seconds": 176.945
+    },
+    {
+      "method": "ewc",
+      "accuracy": 0.1285714286,
+      "forgetting": 0.7605504971,
+      "backward_transfer": -0.7605504971,
+      "stored_frames": 0,
+      "elapsed_seconds": 186.9125
+    },
+    {
+      "method": "adaptive_combined",
+      "accuracy": 0.1782194617,
+      "forgetting": 0.5296593483,
+      "backward_transfer": -0.5296593483,
+      "stored_frames": 200,
+      "elapsed_seconds": 952.0357
+    }
+  ]
+}
